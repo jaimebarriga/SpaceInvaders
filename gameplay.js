@@ -2,11 +2,19 @@ var gameboard = document.getElementById("board");
 var context = gameboard.getContext("2d");
 
 var spriteArray = new Array();
-var ship;
+var ship = new Ship(250, 450);
+
+var control = new Keycontrol();
+
+document.onkeydown = function(e) {
+  control.keydown(e);
+}
+document.onkeyup = function(e) {
+  control.keyup(e);
+}
 
 //Update position of monsters
 function refreshSprites() {
-  console.log(spriteArray.length);
   for (var i = 0; i < spriteArray.length; i++) {
     if (spriteArray[i].visible){
       spriteArray[i].dance();
@@ -16,7 +24,11 @@ function refreshSprites() {
 }
 
 function refreshShip(){
-  ship.move();
+  if (ship.action == "left") {
+    ship.moveleft(20);
+  } else if (ship.action == "right") {
+    ship.moveright(20);
+  }
 }
 
 // Draw black window
@@ -42,10 +54,10 @@ function createSprites(rows, cols){
   }
 }
 
-function createShip(){
-  ship = new Ship(gameboard.width/2, gameboard.height-50);
-  ship.draw();
-}
+// function createShip(){
+//   ship = new Ship(gameboard.width/2, gameboard.height-50);
+//   ship.draw();
+// }
 
 function drawSprites(){
   for( var i=0; i < spriteArray.length; i++){
@@ -57,17 +69,18 @@ function refreshGame() {
   drawWindow();
   //refreshShip();
   refreshSprites();
+  ship.draw();
+  refreshShip()
 }
 
 function startGame(){
   createSprites(6,6);
   drawSprites();
-  createShip();
+  // createShip();
   score = 0;
 }
 
-
 startGame();
-var timer = setInterval(refreshGame, 60/(level*0.4));
+var timer = setInterval(refreshGame, 60/(level*0.5));
 
 

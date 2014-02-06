@@ -13,7 +13,8 @@ function Ship(startx, starty) {
   this.width = 26;
   this.height = 16;
   this.visible= true;
-  
+  this.action = "";
+
   this.x = startx;
   this.y = starty;
   
@@ -29,11 +30,11 @@ function Ship(startx, starty) {
   }
 
   this.move = function() {
-    if(shipAction = "left"){
+    if(this.action = "left"){
       this.moveleft(1);
       return;
     }
-    else if(shipAction = "right"){
+    else if(this.action = "right"){
       this.moveright(1);
       return;
     }
