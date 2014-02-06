@@ -6,7 +6,6 @@ var ship;
 
 //Update position of monsters
 function refreshSprites() {
-  console.log(spriteArray.length);
   for (var i = 0; i < spriteArray.length; i++) {
     if (spriteArray[i].visible){
       spriteArray[i].dance();
@@ -53,9 +52,41 @@ function drawSprites(){
   }
 }
 
+var shipBullet;
+
+function refreshShipBullet(){
+  if(shipFire && !shipBulletAlive){
+    shipBullet = new Bullet(ship.x + 13, ship.y, -7, 60, gameboard.height, 'white');
+    shipBullet.create();
+    shipBulletAlive = true;
+  }
+  else if(shipBulletAlive){
+    shipBullet.update();
+  }
+}
+
+var monsterBullet;
+
+function refreshMonsterBullet(){
+  if(!monsterBulletAlive){
+    var randomInt;
+    do {
+      randomInt = Math.floor(Math.random() * 32);
+    } while (spriteArray[randomInt].visible == false);
+    var monster = spriteArray[randomInt];
+    monsterBullet = new Bullet(monster.x, monster.y, 4, 60, gameboard.height,'red');
+    monsterBulletAlive = true;
+  }
+  else {
+    monsterBullet.update();
+  }
+}
+
 function refreshGame() {
   drawWindow();
-  //refreshShip();
+  refreshShip();
+  refreshShipBullet();
+  refreshMonsterBullet();
   refreshSprites();
 }
 
@@ -68,6 +99,30 @@ function startGame(){
 
 
 startGame();
-var timer = setInterval(refreshGame, 60/(level*0.4));
+var timer = setInterval(refreshGame, 20);
+
+window.addEventListener('keydown', function(e){
+  switch (e.keyCode){
+        case 32: { 
+          shipFire = true; 
+        } break;
+        case 37: { 
+          shipLeft = true; 
+        } break;
+        case 39: { 
+          shipRight = true; 
+        } break;
+  }
+}, true);
+
+window.addEventListener('keyup', function(e){
+  switch (e.keyCode){
+    case 32: { shipFire = false; } break;
+    case 37: { shipLeft = false; } break;
+    case 39: { shipRight = false; } break;
+  }
+}, true);
+
+
 
 
