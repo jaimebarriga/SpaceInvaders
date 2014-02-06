@@ -22,7 +22,7 @@ function Ship(startx, starty) {
   this.y = starty;
   
   this.moveto = function(posx, posy) {
-    if ((posx > 0) && (posx < gameboard.width)) {
+    if ((posx > 0) && (posx < gameboard.width - this.width)) {
       this.x = posx;
       this.y = posy;
     }

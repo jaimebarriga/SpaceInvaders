@@ -13,6 +13,9 @@ function Keycontrol() {
 			//ship.action = "right";
 			shipRight = true;
 		}
+		else if (e.keyCode == this.SPACE) {
+			shipFire = true;
+		}
 		
 	}
 
@@ -25,6 +28,9 @@ function Keycontrol() {
 		} else if (e.keyCode == this.RIGHT) {
 			//ship.action = "";
 			shipRight = false;
+		}
+		else if (e.keyCode == this.SPACE) {
+			shipFire = false;
 		}
 	}
 }
