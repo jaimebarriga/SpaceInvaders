@@ -13,6 +13,7 @@ document.onkeyup = function(e) {
   control.keyup(e);
 }
 
+
 //Update position of monsters
 function refreshSprites() {
   for (var i = 0; i < spriteArray.length; i++) {
@@ -24,11 +25,7 @@ function refreshSprites() {
 }
 
 function refreshShip(){
-  if (ship.action == "left") {
-    ship.moveleft(2);
-  } else if (ship.action == "right") {
-    ship.moveright(2);
-  }
+  ship.move();
 }
 
 // Draw black window
@@ -53,11 +50,6 @@ function createSprites(rows, cols){
     }
   }
 }
-
-// function createShip(){
-//   ship = new Ship(gameboard.width/2, gameboard.height-50);
-//   ship.draw();
-// }
 
 function drawSprites(){
   for( var i=0; i < spriteArray.length; i++){
@@ -101,8 +93,7 @@ function refreshGame() {
   refreshShipBullet();
   refreshMonsterBullet();
   refreshSprites();
-  ship.draw();
-  refreshShip()
+  ship.draw
 }
 
 function startGame(){
@@ -112,10 +103,11 @@ function startGame(){
   score = 0;
 }
 
-startGame();
 
+startGame();
 var timer = setInterval(refreshGame, 20);
 
+/*
 window.addEventListener('keydown', function(e){
   switch (e.keyCode){
         case 32: { 
@@ -137,6 +129,7 @@ window.addEventListener('keyup', function(e){
     case 39: { shipRight = false; } break;
   }
 }, true);
+*/
 
 
 
