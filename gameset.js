@@ -16,7 +16,8 @@ function Ship(startx, starty) {
   this.width = 26;
   this.height = 16;
   this.visible= true;
-  
+  this.action = "";
+
   this.x = startx;
   this.y = starty;
   
@@ -32,13 +33,20 @@ function Ship(startx, starty) {
   }
 
   this.move = function() {
-    if(shipLeft){
-      this.moveleft(5);
-      this.draw();
+    // if(shipLeft){
+    //   this.moveleft(5);
+    //   this.draw();
+    // }
+    // else if(shipRight){
+    //   this.moveright(5);
+    //   this.draw();
+    if(this.action = "left"){
+      this.moveleft(1);
+      return;
     }
-    else if(shipRight){
-      this.moveright(5);
-      this.draw();
+    else if(this.action = "right"){
+      this.moveright(1);
+      return;
     }
     else {
       this.draw();
