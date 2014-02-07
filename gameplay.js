@@ -130,7 +130,22 @@ function refreshGame() {
   ship.draw();
 
   if (spriteArray.length == 0) {
-    console.log("game over");
+    context.fillStyle = "black";
+    context.clearRect(0, 0, gameboard.width, gameboard.height);
+    context.beginPath();
+    context.rect(0, 0, gameboard.width, gameboard.height);
+    context.closePath();
+    context.fill();
+
+    context.font = "40pt Calibri"
+    context.textAlign = "center"
+    context.fillStyle = "white"
+    context.fillText("GAME OVER!", gameboard.width/2, gameboard.height/2);
+
+    context.font = "30pt Calibri"
+    context.textAlign = "center"
+    context.fillStyle = "white"
+    context.fillText("Score: " + score, gameboard.width/2, gameboard.height/2 + 40);
   }
 }
 
