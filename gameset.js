@@ -8,6 +8,7 @@ var shipFire = false;
 var shipBulletAlive = false;
 var monsterBulletAlive = false;
 var level = 1;
+var lives = 3;
 
 function Ship(startx, starty) {
   
@@ -16,6 +17,7 @@ function Ship(startx, starty) {
   this.width = 26;
   this.height = 16;
   this.visible= true;
+  this.safe = false;
   this.action = "";
   
   this.x = startx;
@@ -29,20 +31,24 @@ function Ship(startx, starty) {
   }
 
   this.draw = function() {
-    context.drawImage(this.image, this.x, this.y);
+    if(this.visible){
+      context.drawImage(this.image, this.x, this.y);
+    }
   }
 
   this.move = function() {
-    if(shipLeft){
+    if(shipLeft && ship.visible){
       this.moveleft(5);
       this.draw();
     }
-    else if(shipRight){
+    else if(shipRight && ship.visible){
       this.moveright(5);
       this.draw();
     }
     else {
-      this.draw();
+      if(ship.visible){
+        this.draw();
+      }
     }
   }
 

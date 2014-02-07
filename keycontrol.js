@@ -2,6 +2,7 @@ function Keycontrol() {
 	this.LEFT = 37;
 	this.RIGHT = 39;
 	this.SPACE = 32;
+	this.SAFE = 49;
 
 	this.keydown = function(e) {
 		e = e || window.event;
@@ -15,6 +16,9 @@ function Keycontrol() {
 		}
 		else if (e.keyCode == this.SPACE) {
 			shipFire = true;
+		}
+		else if (e.keyCode == this.SAFE){
+			console.log(ship.safe);
 		}
 		
 	}

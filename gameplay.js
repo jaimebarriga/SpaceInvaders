@@ -1,6 +1,8 @@
 var gameboard = document.getElementById("board");
 var context = gameboard.getContext("2d");
 
+var score;
+
 var spriteArray = new Array();
 var ship = new Ship(250, 450);
 
@@ -14,6 +16,29 @@ document.onkeyup = function(e) {
   control.keyup(e);
 }
 
+function blinks(i){
+  setTimeout(function(){
+    ship.visible = false;
+    setTimeout(function(){
+      ship.visible = true;
+    }, 100*i);
+  }, 100*i);
+}
+
+function loseLife(){
+  lives -= 1;
+  if(lives == 0){
+    alert("GAME OVER!");
+  }
+  ship.safe = true;
+  for(var i = 0;i < 30; i++) {
+    blinks(i);
+  }
+  setTimeout(function(){
+    ship.safe = false;
+  }, 3200);
+}
+
 //Collision setting
 var collision = new Collision();
 
@@ -23,12 +48,15 @@ function detectcollision() {
     monsterBulletAlive = false;
     return;
   }
+  if (!ship.safe && monsterBulletAlive && collision.encounter(ship, monsterBullet)) {
+    monsterBulletAlive = false;
+    loseLife();
+  }
   for (i in spriteArray) {
     if (shipBulletAlive && collision.encounter(shipBullet, spriteArray[i])) {
       shipBulletAlive = false;
       spriteArray.splice(i,1);
-      //spriteArray[i].visible=false;
-      console.log("Removing");
+      score += 1;
       break;
     }
   }
@@ -48,10 +76,19 @@ function refreshShip(){
 
 // Draw black window
 function drawWindow() {
-  context.fillStyle = '#000';
-  context.clearRect(0, 0, gameboard.width, gameboard.height);
+  context.font = "15pt Calibri"
+  context.fillStyle = "#7FFF00"
+  context.clearRect(0, 0, gameboard.width, 20);
   context.beginPath();
-  context.rect(0, 0, gameboard.width, gameboard.height);
+  context.rect(0, 0, gameboard.width, 20);
+  context.closePath();
+  context.fillText("Score: " + score, 10, 20);
+  context.fillText("Lives: " + lives, gameboard.width-100, 20);
+
+  context.fillStyle = "black";
+  context.clearRect(0, 20, gameboard.width, gameboard.height - 20);
+  context.beginPath();
+  context.rect(0, 20, gameboard.width, gameboard.height - 20);
   context.closePath();
   context.fill();
 }
@@ -99,9 +136,11 @@ function refreshMonsterBullet(){
     //do {
     randomInt = Math.floor(Math.random() * spriteArray.length);
     //} while (spriteArray[randomInt].visible == false);
-    var monster = spriteArray[randomInt];
-    monsterBullet = new Bullet(monster.x + 5, monster.y, 4, 60, gameboard.height,'red');
-    monsterBulletAlive = true;
+    if (spriteArray.length != 0) {
+      var monster = spriteArray[randomInt];
+      monsterBullet = new Bullet(monster.x, monster.y, 4, 60, gameboard.height,'red');
+      monsterBulletAlive = true;
+    }
   }
   else {
     monsterBullet.update();
@@ -115,7 +154,11 @@ function refreshGame() {
   refreshMonsterBullet();
   refreshSprites();
   detectcollision();
-  ship.draw
+  ship.draw();
+
+  if (spriteArray.length == 0) {
+    console.log("game over");
+  }
 }
 
 function startGame(){
@@ -128,30 +171,6 @@ function startGame(){
 
 startGame();
 var timer = setInterval(refreshGame, 20);
-
-/*
-window.addEventListener('keydown', function(e){
-  switch (e.keyCode){
-        case 32: { 
-          shipFire = true; 
-        } break;
-        case 37: { 
-          shipLeft = true; 
-        } break;
-        case 39: { 
-          shipRight = true; 
-        } break;
-  }
-}, true);
-
-window.addEventListener('keyup', function(e){
-  switch (e.keyCode){
-    case 32: { shipFire = false; } break;
-    case 37: { shipLeft = false; } break;
-    case 39: { shipRight = false; } break;
-  }
-}, true);
-*/
 
 
 
