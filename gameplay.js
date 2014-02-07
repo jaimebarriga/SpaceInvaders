@@ -1,6 +1,8 @@
 var gameboard = document.getElementById("board");
 var context = gameboard.getContext("2d");
 
+var score;
+
 var spriteArray = new Array();
 var ship = new Ship(250, 450);
 
@@ -27,8 +29,8 @@ function detectcollision() {
     if (shipBulletAlive && collision.encounter(shipBullet, spriteArray[i])) {
       shipBulletAlive = false;
       spriteArray.splice(i,1);
+      score += 1;
       //spriteArray[i].visible=false;
-      console.log("Removing");
       break;
     }
   }
@@ -48,10 +50,18 @@ function refreshShip(){
 
 // Draw black window
 function drawWindow() {
-  context.fillStyle = '#000';
-  context.clearRect(0, 0, gameboard.width, gameboard.height);
+  context.font = "15pt Calibri"
+  context.fillStyle = "#7FFF00"
+  context.clearRect(0, 0, gameboard.width, 20);
   context.beginPath();
-  context.rect(0, 0, gameboard.width, gameboard.height);
+  context.rect(0, 0, gameboard.width, 20);
+  context.closePath();
+  context.fillText("Score: " + score, 10, 20);
+
+  context.fillStyle = "black";
+  context.clearRect(0, 20, gameboard.width, gameboard.height - 20);
+  context.beginPath();
+  context.rect(0, 20, gameboard.width, gameboard.height - 20);
   context.closePath();
   context.fill();
 }
@@ -115,11 +125,11 @@ function refreshGame() {
   refreshMonsterBullet();
   refreshSprites();
   detectcollision();
-  ship.draw
+  ship.draw();
 }
 
 function startGame(){
-  createSprites(6,6);
+  createSprites(2,2);
   drawSprites();
   // createShip();
   score = 0;
