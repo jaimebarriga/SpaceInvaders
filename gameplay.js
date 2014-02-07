@@ -100,7 +100,7 @@ function refreshMonsterBullet(){
     randomInt = Math.floor(Math.random() * spriteArray.length);
     //} while (spriteArray[randomInt].visible == false);
     var monster = spriteArray[randomInt];
-    monsterBullet = new Bullet(monster.x, monster.y, 4, 60, gameboard.height,'red');
+    monsterBullet = new Bullet(monster.x + 5, monster.y, 4, 60, gameboard.height,'red');
     monsterBulletAlive = true;
   }
   else {
