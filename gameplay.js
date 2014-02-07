@@ -4,6 +4,7 @@ var context = gameboard.getContext("2d");
 var spriteArray = new Array();
 var ship = new Ship(250, 450);
 
+//Control setting
 var control = new Keycontrol();
 
 document.onkeydown = function(e) {
@@ -13,6 +14,15 @@ document.onkeyup = function(e) {
   control.keyup(e);
 }
 
+//Collision setting
+var collision = new Collision();
+
+function detectcollision() {
+  if (collision.encounter(shipBullet, monsterBullet)) {
+    shipBulletAlive = false;
+    monsterBulletAlive = false;
+  }
+}
 
 //Update position of monsters
 function refreshSprites() {
@@ -93,6 +103,7 @@ function refreshGame() {
   refreshShipBullet();
   refreshMonsterBullet();
   refreshSprites();
+  detectcollision();
   ship.draw
 }
 

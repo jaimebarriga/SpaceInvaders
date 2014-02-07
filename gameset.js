@@ -54,8 +54,12 @@ function Ship(startx, starty) {
     this.moveto(this.x + num, this.y);
   }
 
-  this.movedown = function(num) {
-    this.moveto(this.x, this.y + num);
+  this.posx = function() {
+    return this.x;
+  }
+
+  this.posy = function() {
+    return this.y;
   }
 }
 
@@ -93,6 +97,14 @@ function Bullet(startx, starty, speedY, minY, maxY, color) {
     else if (this.y < this.minY) {
       shipBulletAlive = false;
     }
+  }
+
+  this.posx = function() {
+    return this.x;
+  }
+
+  this.posy = function() {
+    return this.y;
   }
 }
 
@@ -148,4 +160,11 @@ function Sprite(startx, starty) {
     return monsterAction;
   }
 
+  this.posx = function() {
+    return this.x;
+  }
+
+  this.posy = function() {
+    return this.y;
+  }
 }
