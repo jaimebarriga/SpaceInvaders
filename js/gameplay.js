@@ -1,8 +1,6 @@
 var gameboard = document.getElementById("board");
 var context = gameboard.getContext("2d");
 
-var score;
-
 var spriteArray = new Array();
 var ship = new Ship(250, 450);
 
@@ -28,7 +26,8 @@ function blinks(i){
 function loseLife(){
   lives -= 1;
   if(lives == 0){
-    alert("GAME OVER!");
+    gameover = true;
+    return;
   }
   ship.safe = true;
   for(var i = 0;i < 30; i++) {
@@ -83,7 +82,7 @@ function drawWindow() {
   context.rect(0, 0, gameboard.width, 20);
   context.closePath();
   context.fillText("Score: " + score, 10, 20);
-  context.fillText("Lives: " + lives, gameboard.width-100, 20);
+  context.fillText("Level: " + level, gameboard.width-80, 20);
 
   context.fillStyle = "black";
   context.clearRect(0, 20, gameboard.width, gameboard.height - 20);
@@ -91,6 +90,7 @@ function drawWindow() {
   context.rect(0, 20, gameboard.width, gameboard.height - 20);
   context.closePath();
   context.fill();
+
 }
 
 // To create the sprites for first time when level begins
@@ -107,6 +107,7 @@ function createSprites(rows, cols){
 }
 
 function drawSprites(){
+  createSprites(level*2, 6);
   for( var i=0; i < spriteArray.length; i++){
     spriteArray[i].draw();
   }
@@ -147,6 +148,8 @@ function refreshMonsterBullet(){
   }
 }
 
+var timer;
+
 function refreshGame() {
   drawWindow();
   refreshShip();
@@ -156,7 +159,17 @@ function refreshGame() {
   detectcollision();
   ship.draw();
 
-  if (spriteArray.length == 0) {
+  if (movedown) {
+    for(var i = 0; i< spriteArray.length; i++){
+      spriteArray[i].movedown(10);
+      movedown = false;
+    }
+    if(spriteArray[spriteArray.length-1].y > gameboard.height - 20){
+      gameover = true;
+    }
+  }
+
+  if(gameover){
     context.fillStyle = "black";
     context.clearRect(0, 0, gameboard.width, gameboard.height);
     context.beginPath();
@@ -173,19 +186,44 @@ function refreshGame() {
     context.textAlign = "center"
     context.fillStyle = "white"
     context.fillText("Score: " + score, gameboard.width/2, gameboard.height/2 + 40);
-  }
+
+    clearInterval(timer);
+  }   
+
+  if(spriteArray.length == 0){
+    if(level == 3){
+      context.fillStyle = "black";
+      context.clearRect(0, 0, gameboard.width, gameboard.height);
+      context.beginPath();
+      context.rect(0, 0, gameboard.width, gameboard.height);
+      context.closePath();
+      context.fill();
+
+      context.font = "40pt Calibri"
+      context.textAlign = "center"
+      context.fillStyle = "yellow"
+      context.fillText("YOU WON!", gameboard.width/2, gameboard.height/2);
+
+      context.font = "30pt Calibri"
+      context.textAlign = "center"
+      context.fillStyle = "yellow"
+      context.fillText("Score: " + score, gameboard.width/2, gameboard.height/2 + 40);
+    }
+    else {
+      level++;
+      drawSprites();
+    }
+  } 
 }
 
 function startGame(){
-  createSprites(6,6);
   drawSprites();
-  // createShip();
   score = 0;
+  timer = setInterval(refreshGame, 20);
 }
 
 
 startGame();
-var timer = setInterval(refreshGame, 20);
 
 
 

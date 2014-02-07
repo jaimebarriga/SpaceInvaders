@@ -9,7 +9,6 @@ function Collision() {
 		} else if (a.posy() > (b.posy() + b.height)) {
 			return false;
 		}
-
 		return true;
 	}
 }

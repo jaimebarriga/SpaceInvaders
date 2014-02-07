@@ -9,6 +9,9 @@ var shipBulletAlive = false;
 var monsterBulletAlive = false;
 var level = 1;
 var lives = 3;
+var score = 0;
+var gameover = false;
+var movedown = false;
 
 function Ship(startx, starty) {
   
@@ -121,6 +124,7 @@ function Sprite(startx, starty) {
   this.width = 22;
   this.height = 16;
   this.visible = true;
+  this.maxY = gameboard.width
   
   this.x = startx;
   this.y = starty;
@@ -151,10 +155,12 @@ function Sprite(startx, starty) {
   this.dance = function() {
     if (monsterAction == "left" && this.x <= 10) {
       monsterAction = "right";
+      movedown = true;
     } 
     else if (monsterAction == "right" && this.x >= gameboard.width - 26) {
       monsterAction = "left";
       this.moveright(1);
+      movedown = true;
       return monsterAction;
     }
     if (monsterAction == "left"){
