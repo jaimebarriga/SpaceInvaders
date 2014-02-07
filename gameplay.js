@@ -18,19 +18,27 @@ document.onkeyup = function(e) {
 var collision = new Collision();
 
 function detectcollision() {
-  if (collision.encounter(shipBullet, monsterBullet)) {
+  if (shipBulletAlive && collision.encounter(shipBullet, monsterBullet)) {
     shipBulletAlive = false;
     monsterBulletAlive = false;
+    return;
+  }
+  for (i in spriteArray) {
+    if (shipBulletAlive && collision.encounter(shipBullet, spriteArray[i])) {
+      shipBulletAlive = false;
+      spriteArray.splice(i,1);
+      //spriteArray[i].visible=false;
+      console.log("Removing");
+      break;
+    }
   }
 }
 
 //Update position of monsters
 function refreshSprites() {
   for (var i = 0; i < spriteArray.length; i++) {
-    if (spriteArray[i].visible){
-      spriteArray[i].dance();
-      spriteArray[i].draw();
-    }
+    spriteArray[i].dance();
+    spriteArray[i].draw();
   }
 }
 
@@ -78,6 +86,9 @@ function refreshShipBullet(){
   else if(shipBulletAlive){
     shipBullet.update();
   }
+  else if (!shipBulletAlive){
+    shipBullet = "";
+  }
 }
 
 var monsterBullet;
@@ -85,9 +96,9 @@ var monsterBullet;
 function refreshMonsterBullet(){
   if(!monsterBulletAlive){
     var randomInt;
-    do {
-      randomInt = Math.floor(Math.random() * 32);
-    } while (spriteArray[randomInt].visible == false);
+    //do {
+    randomInt = Math.floor(Math.random() * spriteArray.length);
+    //} while (spriteArray[randomInt].visible == false);
     var monster = spriteArray[randomInt];
     monsterBullet = new Bullet(monster.x, monster.y, 4, 60, gameboard.height,'red');
     monsterBulletAlive = true;
