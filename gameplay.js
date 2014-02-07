@@ -109,9 +109,11 @@ function refreshMonsterBullet(){
     //do {
     randomInt = Math.floor(Math.random() * spriteArray.length);
     //} while (spriteArray[randomInt].visible == false);
-    var monster = spriteArray[randomInt];
-    monsterBullet = new Bullet(monster.x, monster.y, 4, 60, gameboard.height,'red');
-    monsterBulletAlive = true;
+    if (spriteArray.length != 0) {
+      var monster = spriteArray[randomInt];
+      monsterBullet = new Bullet(monster.x, monster.y, 4, 60, gameboard.height,'red');
+      monsterBulletAlive = true;
+    }
   }
   else {
     monsterBullet.update();
@@ -126,10 +128,14 @@ function refreshGame() {
   refreshSprites();
   detectcollision();
   ship.draw();
+
+  if (spriteArray.length == 0) {
+    console.log("game over");
+  }
 }
 
 function startGame(){
-  createSprites(2,2);
+  createSprites(1,1);
   drawSprites();
   // createShip();
   score = 0;
@@ -138,30 +144,6 @@ function startGame(){
 
 startGame();
 var timer = setInterval(refreshGame, 20);
-
-/*
-window.addEventListener('keydown', function(e){
-  switch (e.keyCode){
-        case 32: { 
-          shipFire = true; 
-        } break;
-        case 37: { 
-          shipLeft = true; 
-        } break;
-        case 39: { 
-          shipRight = true; 
-        } break;
-  }
-}, true);
-
-window.addEventListener('keyup', function(e){
-  switch (e.keyCode){
-    case 32: { shipFire = false; } break;
-    case 37: { shipLeft = false; } break;
-    case 39: { shipRight = false; } break;
-  }
-}, true);
-*/
 
 
 
